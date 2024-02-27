@@ -53,4 +53,10 @@
     </tbody>
   </table>
 </main>
+<% if (user.username === 'admin') { %>
+<form action="/admin/make-admin" method="post">
+  <input type="hidden" name="userId" value="<%= user.id %>">
+  <button type="submit">Стать админом</button>
+</form>    
+<% } %>
 <%- include('footer') %>
