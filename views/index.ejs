@@ -53,7 +53,7 @@
     </tbody>
   </table>
 </main>
-<% if (user.username === 'admin') { %>
+<% if (user && user.username === 'admin') { %>
 <form action="/admin/make-admin" method="post">
   <input type="hidden" name="userId" value="<%= user.id %>">
   <button type="submit">Стать админом</button>
