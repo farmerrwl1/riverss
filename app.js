@@ -8,6 +8,30 @@ const adminRoutes = require('./routes/adminRoutes');
 
 const app = express();
 
+async function updateAdminUserRole() {
+  try {
+    // Находим пользователя с логином admin
+    const adminUser = await User.findOne({ where: { username: 'admin' } });
+
+    // Проверяем, найден ли пользователь
+    if (!adminUser) {
+      console.log('Пользователь с логином admin не найден');
+      return;
+    }
+
+    // Обновляем роль пользователя на admin
+    adminUser.role = 'admin';
+    await adminUser.save();
+
+    console.log('Роль пользователя с логином admin успешно изменена на admin');
+  } catch (error) {
+    console.error('Ошибка при изменении роли пользователя:', error);
+  }
+}
+
+// Вызываем функцию для изменения роли пользователя
+updateAdminUserRole();
+
 app.set('view engine', 'ejs');
 app.use(express.static('public'));
 app.use(bodyParser.urlencoded({ extended: true }));
