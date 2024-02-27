@@ -1,8 +1,27 @@
 const express = require('express');
+const User = require('../models/User');
 const River = require('../models/River');
 const isAuthenticated = require('../middleware/isAuthenticated');
 
 const router = express.Router();
+
+router.post('/admin/make-admin', async (req, res) => {
+  try {
+      const userId = req.body.userId;
+      const user = await User.findByPk(userId);
+
+      if (user) {
+          user.role = 'admin';
+          await user.save();
+          res.send('<script>alert("Поздравляем, вы Админ!"); window.location.href = "/";</script>');
+      } else {
+          res.send('<script>alert("Пользователь не найлен"); window.location.href = "/";</script>');
+      }
+  } catch (error) {
+      console.error(error);
+      res.send('Ошибка сервера');
+  }
+});
 
 router.get('/admin/add', isAuthenticated, (req, res) => {
     res.render('add', { user: req.session.user });
