@@ -58,24 +58,11 @@ router.get('/favoriteRivers', async (req, res) => {
     
     try {
       await FavoriteItem.destroy({ where: { userId, riverId } });
-      res.redirect('/');
+      res.redirect(req.headers.referer || '/');
     } catch (error) {
       console.error(error);
       res.status(500).send('Ошибка при удалении из избранного');
       return res.send('<script>alert("Ошибка при удалении из избранного"); window.location.href = "/";</script>');
-    }
-  });
-
-  router.post('/favoritess/remove', isAuthenticated, async (req, res) => {
-    const { riverId } = req.body;
-    const userId = req.session.user.id;
-    try {
-      await FavoriteItem.destroy({ where: { userId, riverId } });
-      res.redirect('/favoriteRivers');
-    } catch (error) {
-      console.error(error);
-      res.status(500).send('Ошибка при удалении из избранного');
-      return res.send('<script>alert("Ошибка при удалении из избранного"); window.location.href = "/favoriteRivers";</script>');
     }
   });
 
